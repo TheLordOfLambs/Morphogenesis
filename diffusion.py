@@ -50,8 +50,8 @@ D_B = 0.5                           # diffusion rate chimical B
 f = 0.0545                           # feeding rate chimical A
 k = 0.062                           # killing rate chimical B
 dt = 1                               # time steps in sec
-maxiter = 6000                        # iterations nubers
-screen_rate = 30                      # rate of images saving
+maxiter = 60                        # iterations nubers
+screen_rate = 1                      # rate of images saving
 image_path = "Images/"              # where the images will be saved
 
 
@@ -83,7 +83,14 @@ for i in tqdm(range(maxiter)) :
     B = B + dt*(D_B*lapB+A*B*B-(k+f)*B)
     
     if i%screen_rate == 0 :
-        plt.imsave(image_path+"{}.png".format(str(j).zfill(5)),B) #saving the image
-        j += 1
+        
+        try :
+            plt.imsave(image_path+"{}.png".format(str(j).zfill(5)),B) #saving the image
+            j += 1
+        except FileNotFoundError:
+            os.mkdir("Images/")
+            plt.imsave(image_path+"{}.png".format(str(j).zfill(5)),B) #saving the image
+            j += 1
+            
         
 
